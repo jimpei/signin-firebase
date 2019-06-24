@@ -29,19 +29,21 @@ let router = new Router({
 });
 
 router.beforeEach((to, from, next) => {
-  let requiresAuth = to.matched.some(record => record.meta.requiresAuth);
-  let currentUser = firebase.auth().currentUser;
+  const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
   if (requiresAuth) {
     // このルートはログインされているかどうか認証が必要です。
     // もしされていないならば、ログインページにリダイレクトします。
-    if (!currentUser) {
-      next({
-        path: "/signin",
-        query: { redirect: to.fullPath }
-      });
-    } else {
-      next();
-    }
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        console.log(user.email);
+        next();
+      } else {
+        next({
+          path: "/signin",
+          query: { redirect: to.fullPath }
+        });
+      }
+    });
   } else {
     next(); // next() を常に呼び出すようにしてください!
   }
