@@ -3,7 +3,7 @@
     <h2>Sign up</h2>
     <input type="text" placeholder="Username" v-model="username">
     <input type="password" placeholder="Password" v-model="password">
-    <button class="waves-effect waves-light btn">Register</button>
+    <button @click="signUp" class="waves-effect waves-light btn">Register</button>
     <p>Do you have an account? 
       <router-link to="/signin">sign in now!!</router-link>
     </p>
@@ -11,6 +11,8 @@
 </template>
 
 <script>
+import firebase from "firebase";
+
 export default {
   name: 'SignUp',
   data () {
@@ -20,7 +22,18 @@ export default {
       password: ''
     }
   },
-  methods: {}
+  methods: {
+    signUp: function () {
+      console.log('debug push signup button');
+      firebase.auth().createUserWithEmailAndPassword(this.username, this.password)
+        .then(user => {
+          alert('Create account: ', user.email)
+        })
+        .catch(error => {
+          alert(error.message)
+        })
+    }
+  }
 }
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
