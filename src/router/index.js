@@ -7,13 +7,13 @@ import firebase from "firebase";
 
 Vue.use(Router);
 
-export default new Router({
+let router = new Router({
   routes: [
     {
       path: "/",
       name: "HelloWorld",
-      component: HelloWorld
-      // meta: { requiresAuth: true }
+      component: HelloWorld,
+      meta: { requiresAuth: true }
     },
     {
       path: "/signup",
@@ -27,3 +27,24 @@ export default new Router({
     }
   ]
 });
+
+router.beforeEach((to, from, next) => {
+  let requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+  let currentUser = firebase.auth().currentUser;
+  if (requiresAuth) {
+    // このルートはログインされているかどうか認証が必要です。
+    // もしされていないならば、ログインページにリダイレクトします。
+    if (!currentUser) {
+      next({
+        path: "/signin",
+        query: { redirect: to.fullPath }
+      });
+    } else {
+      next();
+    }
+  } else {
+    next(); // next() を常に呼び出すようにしてください!
+  }
+});
+
+export default router;
