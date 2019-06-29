@@ -68,11 +68,12 @@ export default {
     githubSignInCredential: function () {
       console.log('[signIn] try github signin credential');
       var provider = new firebase.auth.GithubAuthProvider();
+      // TODO: 認証後のリダイレクト先がsignIn画面になっているので、うまくいかない。
       firebase.auth().signInWithRedirect(provider);
       console.log('[signIn] redirect github.');
     },
     rootPush: function () {
-      console.log('[signIn] rootpush button start');
+      console.log('[signIn] rootpush button start. router push => top page.');
       this.$router.push('/');
       console.log('[signIn] rootpush button end');
     },

@@ -43,6 +43,32 @@ router.beforeEach((to, from, next) => {
   if (requiresAuth) {
     console.log("[router] access to requiresAuth=true page. sign check start.");
 
+    // リダイレクト元から認証情報をチェックする
+    firebase
+      .auth()
+      .getRedirectResult()
+      .then(result => {
+        if (result.credential) {
+          var token = result.credential.accessToken;
+          console.log("[router] get redirect result token:" + token);
+          var user = result.user;
+          console.log(
+            "[router] get redirect result:" + user.email + " goto next()"
+          );
+          next();
+        } else {
+          console.log("[router] none redirect result.");
+        }
+      })
+      .catch(function(error) {
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        var email = error.email;
+        // The firebase.auth.AuthCredential type that was used.
+        var credential = error.credential;
+        console.log("[router] get redirect result error");
+      });
+
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
         console.log(
