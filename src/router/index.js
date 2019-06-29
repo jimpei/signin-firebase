@@ -35,9 +35,10 @@ router.beforeEach((to, from, next) => {
     // もしされていないならば、ログインページにリダイレクトします。
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
-        console.log(user.email);
+        console.log("[router] sigin in check ok : " + user.email);
         next();
       } else {
+        console.log("[router] sigin in check ng. redirect to signin");
         next({
           path: "/signin",
           query: { redirect: to.fullPath }
@@ -45,6 +46,7 @@ router.beforeEach((to, from, next) => {
       }
     });
   } else {
+    console.log("[router] sigin in check error.");
     next(); // next() を常に呼び出すようにしてください!
   }
 });
