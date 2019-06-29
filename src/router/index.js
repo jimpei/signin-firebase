@@ -29,16 +29,28 @@ let router = new Router({
 });
 
 router.beforeEach((to, from, next) => {
+  console.log("[router] before each start");
+  console.dir("[router] from : " + from.path);
+  // console.dir(from);
+  console.dir("[router] to : " + to.path);
+  // console.dir(to);
+  // console.dir("[router] next");
+  // console.dir(next);
+
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+
+  // 認証が必要なページへのアクセスなのかチェックする
   if (requiresAuth) {
-    // このルートはログインされているかどうか認証が必要です。
-    // もしされていないならば、ログインページにリダイレクトします。
+    console.log("[router] access to requiresAuth=true page. sign check start.");
+
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
-        console.log("[router] sigin in check ok : " + user.email);
+        console.log(
+          "[router] sigin in check ok : " + user.email + " goto next()."
+        );
         next();
       } else {
-        console.log("[router] sigin in check ng. redirect to signin");
+        console.log("[router] sigin in check ng. redirect to signin.");
         next({
           path: "/signin",
           query: { redirect: to.fullPath }
@@ -46,7 +58,8 @@ router.beforeEach((to, from, next) => {
       }
     });
   } else {
-    console.log("[router] sigin in check error.");
+    // 認証が必要なページではないので、認証チェックは行わない
+    console.log("[router] access to requiresAuth=false page. goto next().");
     next(); // next() を常に呼び出すようにしてください!
   }
 });

@@ -5,7 +5,9 @@
     <input type="password" placeholder="Password" v-model="password">
     <button @click="mailSignIn" class="waves-effect waves-light btn">Mail Signin</button>
     <button @click="githubSignInPopUp" class="waves-effect waves-light btn">github Signin(pop up)</button>
-    <p>You don't have an account? 
+    <button @click="githubSignInCredential" class="waves-effect waves-light btn">github Signin(credential)</button>
+    <button @click="rootPush" class="waves-effect waves-light btn">root push</button>
+    <p>You don't have an account?
       <router-link to="/signup">create account now!!</router-link>
     </p>
   </div>
@@ -24,31 +26,33 @@ export default {
   },
   methods: {
     mailSignIn: function () {
-      console.log('try mail sigin.');
+      console.log('[signIn] try mail sigin.');
       firebase.auth().signInWithEmailAndPassword(this.username, this.password).then(
         user => {
-          alert('mailSignIn Success! redirect to top page.');
-          console.log('mailSignIn Success! redirect to top page.');
+          // alert('mailSignIn Success! redirect to top page.');
+          console.log('[signIn] mailSignIn Success! redirect to top page.');
           this.$router.push('/');
         },
         err => {
           alert(err.message);
-          console.log('mailSignIn error!');
+          console.log('[signIn] mailSignIn error!');
         }
       )
     },
     githubSignInPopUp: function () {
-      console.log('try github signin popup');
+      console.log('[signIn] try github signin popup');
       var provider = new firebase.auth.GithubAuthProvider();
-      firebase.auth().signInWithPopup(provider).then(
-        function(result) {
+      firebase.auth().signInWithPopup(provider)
+      .then(result => {
           var token = result.credential.accessToken;
           var user = result.user;
-          alert('github signin Success! ' + user.email);
-          console.log(' github signin Success! ' + user.email);
+          // alert('github signin Success! ' + user.email);
+          console.log('[signIn] github signin Success! ' + user.email);
+          this.$router.push('/');
+
         })
         .catch(function(error) {
-          console.log('github signin error.');
+          console.log('[signIn] github signin error.');
           var errorCode = error.code;
           var errorMessage = error.message;
           var email = error.email;
@@ -58,9 +62,20 @@ export default {
           return 'error';
         });
 
-        console.log('github signin success. router push => top page.');
-        this.$router.push('/');
-    }
+        // console.log('[signIn] github signin success. router push => top page.');
+        // this.$router.push('/');
+    },
+    githubSignInCredential: function () {
+      console.log('[signIn] try github signin credential');
+      var provider = new firebase.auth.GithubAuthProvider();
+      firebase.auth().signInWithRedirect(provider);
+      console.log('[signIn] redirect github.');
+    },
+    rootPush: function () {
+      console.log('[signIn] rootpush button start');
+      this.$router.push('/');
+      console.log('[signIn] rootpush button end');
+    },
   }
 }
 </script>
