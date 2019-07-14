@@ -1,10 +1,19 @@
 import Vue from "vue";
+import Vuetify from "vuetify";
+
 import Router from "vue-router";
 import HelloWorld from "@/components/HelloWorld";
 import SignUp from "@/components/SignUp";
 import SignIn from "@/components/SignIn";
+import Chat from "@/components/ChatSample";
 import firebase from "firebase";
+import "vuetify/dist/vuetify.min.css";
+import "vuetify/es5/components/Vuetify";
+// import VApp from "vuetify/es5/components/VApp";
+import "material-design-icons-iconfont/dist/material-design-icons.css";
+import "@mdi/font/css/materialdesignicons.css";
 
+Vue.use(Vuetify);
 Vue.use(Router);
 
 let router = new Router({
@@ -24,6 +33,11 @@ let router = new Router({
       path: "/signin",
       name: "SignIn",
       component: SignIn
+    },
+    {
+      path: "/chat",
+      name: "Chat",
+      component: Chat
     }
   ]
 });
@@ -74,6 +88,7 @@ router.beforeEach((to, from, next) => {
         console.log(
           "[router] sigin in check ok : " + user.email + " goto next()."
         );
+        console.log(user.photoURL);
         next();
       } else {
         console.log("[router] sigin in check ng. redirect to signin.");

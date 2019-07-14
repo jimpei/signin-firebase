@@ -29,9 +29,14 @@ import firebase from 'firebase'
 
 export default {
   name: 'HelloWorld',
+  mounted() {
+    firebaseDatabase.ref('message/').on('value', (snapshot) => {
+      this.$store.state.logUnRead = snapshot.val()
+    })
+  },
   data () {
     return {
-      msg: 'main page.',
+      msg: 'chat page.',
       name: firebase.auth().currentUser.email,
       iconUrl: firebase.auth().currentUser.photoURL,
       items: [

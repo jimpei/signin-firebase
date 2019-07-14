@@ -1,12 +1,30 @@
 <template>
   <div class="signin">
-    <h2>Sign in</h2>
-    <input type="text" placeholder="Username" v-model="username">
-    <input type="password" placeholder="Password" v-model="password">
-    <button @click="mailSignIn" class="waves-effect waves-light btn">Mail Signin</button>
+    <v-container fluid>
+      <h2>Sign in</h2>
+      <v-layout row>
+        <v-flex xs12>
+          <v-card tile flat>
+            <v-card-text></v-card-text>
+            <v-layout justify-center column fill-height>
+              <v-text-field type="text" v-model="username" label="Solo" placeholder="mail address" solo></v-text-field>
+              <v-text-field type="password" v-model="password" label="Solo" placeholder="password" solo></v-text-field>
+              <v-btn color="success" @click="mailSignIn">login</v-btn>
+              <v-btn color="warning" @click="githubSignInPopUp">github Signin(pop up)</v-btn>
+              <v-btn color="warning" @click="githubSignInCredential">github Signin(redirect)</v-btn>
+              <v-btn color="warning" @click="rootPush">root push</v-btn>
+            </v-layout>
+          </v-card>
+        </v-flex>
+      </v-layout>
+    </v-container>
+
+    <!-- <input type="text" placeholder="Username" v-model="username">
+    <input type="password" placeholder="Password" v-model="password"> -->
+    <!-- <button @click="mailSignIn" class="waves-effect waves-light btn">Mail Signin</button>
     <button @click="githubSignInPopUp" class="waves-effect waves-light btn">github Signin(pop up)</button>
     <button @click="githubSignInCredential" class="waves-effect waves-light btn">github Signin(credential)</button>
-    <button @click="rootPush" class="waves-effect waves-light btn">root push</button>
+    <button @click="rootPush" class="waves-effect waves-light btn">root push</button> -->
     <p>You don't have an account?
       <router-link to="/signup">create account now!!</router-link>
     </p>
