@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@mdi/font": "^3.7.95",
-    "ajv": "^6.10.0",
+    "ajv": "^6.12.3",
     "babel-plugin-transform-imports": "^1.5.1",
     "firebase": "^6.2.4",
     "material-design-icons-iconfont": "^5.0.1",
